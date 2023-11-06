@@ -28,6 +28,8 @@ target_link_libraries(main test_runner)
 install(TARGETS 
     main 
     test_runner 
-    Catch2WithMain)
+    Catch2
+    Catch2WithMain
+    RUNTIME DESTINATION .)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_LIST_DIR}/dist)
