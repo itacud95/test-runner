@@ -9,4 +9,5 @@ fi
 
 cmake -Bbuild && \
 cmake --build build -j8 && \
-./build/main
+cmake --install build && \
+./dist/main
