@@ -5,12 +5,15 @@ project("test-runner")
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 set(CMAKE_POSITION_INDEPENDENT_CODE on)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH on)
-set(CMAKE_INSTALL_RPATH "$ORIGIN/lib")
+set(CMAKE_INSTALL_RPATH "$ORIGIN")
 
-# catch
-option(BUILD_SHARED_LIBS "Build shared library" on)
+IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  SET(CMAKE_INSTALL_PREFIX "" CACHE PATH "install prefix" FORCE)
+ENDIF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
-add_subdirectory(Catch2-3.4.0)
+message("************* ${CMAKE_INSTALL_PREFIX}")
+
+add_subdirectory(Catch2)
 
 # test-modules libraries 
 add_subdirectory(test-modules)
@@ -18,7 +21,7 @@ add_subdirectory(test-modules)
 # test_runner library
 add_library(test_runner SHARED test_runner.cpp)
 target_link_libraries(test_runner
-    Catch2::Catch2WithMain
+    Catch2::Catch2
 )
 
 # main executable
@@ -29,7 +32,6 @@ install(TARGETS
     main 
     test_runner 
     Catch2
-    Catch2WithMain
-    RUNTIME DESTINATION .)
+    DESTINATION .)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_LIST_DIR}/dist)

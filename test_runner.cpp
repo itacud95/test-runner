@@ -28,12 +28,13 @@ class TestRunner {
     void *_handle;
 };
 
-extern "C" bool RunTests() {
+extern "C" bool RunTests(int argc, char** argv) {
     std::cout << "RunTests()\n";
 
     auto session = Catch::Session();
     auto &config = session.configData();
     config.filenamesAsTags = true;
+    session.applyCommandLine(argc, argv);
 
     {
         std::list<TestRunner> testLibs;
