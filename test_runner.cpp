@@ -1,10 +1,19 @@
 #include <dlfcn.h>
 
-#include <iostream>
 #include <list>
 #include <string>
 
 #include "catch2/catch_all.hpp"
+
+#ifdef ANDROID
+#include <android/log.h>
+#define log(...) __android_log_print(ANDROID_LOG_INFO, "Catch", __VA_ARGS__)
+#else
+#include <printf.h>
+#define log(...)         \
+    printf(__VA_ARGS__); \
+    printf("\n")
+#endif
 
 class TestRunner {
    public:
@@ -19,7 +28,6 @@ class TestRunner {
             return;
         }
         int ret = dlclose(_handle);
-        std::cout << "dlclose: " << ret << '\n';
     }
 
     bool IsLoaded() const { return _handle != nullptr; }
@@ -29,7 +37,7 @@ class TestRunner {
 };
 
 extern "C" bool RunTests(int argc, char** argv) {
-    std::cout << "RunTests()\n";
+    log("RunTests()");
 
     auto session = Catch::Session();
     auto &config = session.configData();
@@ -40,22 +48,22 @@ extern "C" bool RunTests(int argc, char** argv) {
 
     {
         std::list<TestRunner> testLibs;
-        const std::string kPath = "/home/jk/dev/test-runner/build/test-modules/";
         auto tests = {
-            "foo/libfoo_tests.so",  //
-            "bar/libbar_tests.so"   //
+            "libfoo_tests.so",  //
+            "libbar_tests.so"   //
         };
 
         for (const auto &test : tests) {
-            testLibs.emplace_back(kPath + test);
+            log("Loading %s", test);
+            testLibs.emplace_back(test);
             if (!testLibs.back().IsLoaded()) {
-                std::cout << "Failed to load test: " << kPath + test << '\n';
+                log("Failed to load test: %s", test);
                 return false;
             }
         }
         int result = session.run();
-        std::cout << "result: " << result << '\n';
+        log("result: %d", result);
     }
-    std::cout << "RunTests() done\n";
+    log("RunTests() done\n");
     return true;
 }
