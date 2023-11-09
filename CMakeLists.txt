@@ -11,8 +11,6 @@ IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   SET(CMAKE_INSTALL_PREFIX "" CACHE PATH "install prefix" FORCE)
 ENDIF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
-message("************* ${CMAKE_INSTALL_PREFIX}")
-
 add_subdirectory(Catch2)
 
 # test-modules libraries 
@@ -29,9 +27,8 @@ add_executable(main main.cpp)
 target_link_libraries(main test_runner)
 
 install(TARGETS 
-    main 
+    main
     test_runner 
-    Catch2
     DESTINATION .)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_LIST_DIR}/dist)

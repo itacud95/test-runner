@@ -14,3 +14,7 @@ set_property(TARGET Catch2 PROPERTY SOVERSION)
 #       Link with this for custom main
 #         int main( int argc, char* argv[] ) {
 #             int result = Catch::Session().run( argc, argv ); }
+
+install(TARGETS 
+    Catch2
+    DESTINATION .)
