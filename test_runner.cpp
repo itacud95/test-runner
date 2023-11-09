@@ -42,6 +42,7 @@ extern "C" bool RunTests(int argc, char** argv) {
     auto session = Catch::Session();
     auto &config = session.configData();
     config.filenamesAsTags = true;
+    config.defaultOutputFilename = "%debug";
     if (argc > 1) {
         session.applyCommandLine(argc, argv);
     }
