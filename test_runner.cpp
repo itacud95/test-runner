@@ -34,7 +34,9 @@ extern "C" bool RunTests(int argc, char** argv) {
     auto session = Catch::Session();
     auto &config = session.configData();
     config.filenamesAsTags = true;
-    session.applyCommandLine(argc, argv);
+    if (argc > 1) {
+        session.applyCommandLine(argc, argv);
+    }
 
     {
         std::list<TestRunner> testLibs;
