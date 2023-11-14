@@ -4,6 +4,7 @@
 #include <string>
 
 #include "catch2/catch_all.hpp"
+#include "catch2/interfaces/catch_interfaces_config.hpp"
 
 #ifdef ANDROID
 #include <android/log.h>
@@ -43,6 +44,7 @@ extern "C" bool RunTests(int argc, char** argv) {
     auto &config = session.configData();
     config.filenamesAsTags = true;
     config.defaultOutputFilename = "%debug";
+    config.defaultColourMode = Catch::ColourMode::ANSI;
     if (argc > 1) {
         session.applyCommandLine(argc, argv);
     }
